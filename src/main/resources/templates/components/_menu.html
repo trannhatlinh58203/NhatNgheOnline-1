@@ -1,0 +1,50 @@
+<div class="container-fluid bg-danger text-white py-2">
+    <div class="container d-flex justify-content-between align-items-center flex-wrap">
+
+        <!-- Logo + Danh mục -->
+        <div class="d-flex align-items-center gap-3">
+            <a href="/" class="d-flex align-items-center text-white text-decoration-none">
+                <img th:src="@{/images/logo.png}" alt="Logo" height="40" class="me-2">
+                <div class="fw-bold fs-5">NHAT NGHE</div>
+            </a>
+            <button class="btn btn-danger text-white d-flex align-items-center">
+                <i class="bi bi-list fs-5 me-1"></i> Danh mục
+            </button>
+        </div>
+
+        <!-- Tìm kiếm -->
+        <form action="/search" method="get" class="d-flex flex-grow-1 mx-4">
+            <input type="text" name="keyword" class="form-control" placeholder="Bạn cần tìm gì?">
+            <button type="submit" class="btn btn-light ms-1">
+                <i class="bi bi-search"></i>
+            </button>
+        </form>
+
+        <!-- Các chức năng bên phải -->
+        <div class="d-flex align-items-center gap-3 text-white flex-wrap justify-content-end">
+            <div class="d-flex align-items-center">
+                <i class="bi bi-headset fs-5 me-1"></i>
+                <span>Hotline<br><strong>1900.5301</strong></span>
+            </div>
+            <div class="d-flex align-items-center">
+                <i class="bi bi-geo-alt fs-5 me-1"></i>
+                <span>Hệ thống<br><strong>Showroom</strong></span>
+            </div>
+            <div class="d-flex align-items-center">
+                <i class="bi bi-camera fs-5 me-1"></i>
+                <span>Tra cứu<br><strong>đơn hàng</strong></span>
+            </div>
+            <a href="/cart" class="text-white d-flex align-items-center text-decoration-none">
+                <i class="bi bi-cart3 fs-5 me-1 position-relative">
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning text-dark">
+                        0
+                    </span>
+                </i>
+                <strong>Giỏ hàng</strong>
+            </a>
+            <a href="/login" class="btn btn-outline-light d-flex align-items-center">
+                <i class="bi bi-person fs-5 me-1"></i> Đăng nhập
+            </a>
+        </div>
+    </div>
+</div>
