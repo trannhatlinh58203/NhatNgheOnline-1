@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<link rel="shortcut icon" type="x-icon"
+	th:href="@{/images/logo/logo.png}">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Giỏ hàng của tôi</title>
+
+<!-- Bootstrap -->
+<link rel="stylesheet"
+	th:href="@{/libraries/bootstrap-5.3.3-dist/css/bootstrap.min.css}">
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+<!-- CSS Custom -->
+<link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+
+<body>
+
+	<!-- HEADER -->
+	<header class="row">
+		<div th:replace="/components/_menu.html"></div>
+	</header>
+
+	<!-- BODY -->
+	<div class="container py-4 col-5">
+			<!-- Quay lại -->
+			<div class="mb-2">
+				<a href="/" class="text-decoration-none small"><i
+					class="bi bi-chevron-left"></i> Mua thêm sản phẩm khác</a>
+			</div>
+		<div class="container my-5 mt-0 bg-white p-4 rounded shadow-sm">
+			<!-- Progress -->
+			<div class="bg-danger bg-opacity-10 rounded p-3 mb-4">
+				<div class="d-flex justify-content-between text-center">
+					<div class="flex-fill">
+						<i class="bi bi-cart-fill fs-4 text-danger"></i>
+						<div class="fw-bold text-danger">Giỏ hàng</div>
+					</div>
+					<div class="flex-fill">
+						<i class="bi bi-card-list fs-4 text-secondary"></i>
+						<div class="text-muted">Thông tin đặt hàng</div>
+					</div>
+					<div class="flex-fill">
+						<i class="bi bi-credit-card fs-4 text-secondary"></i>
+						<div class="text-muted">Thanh toán</div>
+					</div>
+					<div class="flex-fill">
+						<i class="bi bi-check2-circle fs-4 text-secondary"></i>
+						<div class="text-muted">Hoàn tất</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Sản phẩm -->
+			<div class="row mb-3">
+				<div class="col-md-2">
+					<img src="/images/products/1.png" class="img-fluid rounded border">
+				</div>
+				<div class="col-md-7">
+					<h6 class="fw-bold">PC GVN Intel i7-14700F/ VGA RTX 4070 Super</h6>
+					<div class="text-muted small mb-2">Quà tặng khuyến mãi</div>
+					<ul class="text-muted small mb-1 ps-3">
+						<li>Tặng: 1 x Màn hình ViewSonic VX2479A-HD-PRO 24" IPS 240Hz
+							1ms chuyên game &mdash; Trị giá: 4.490.000₫</li>
+					</ul>
+					<a href="#" class="text-danger small"><i
+						class="bi bi-trash-fill me-1"></i>Xoá</a>
+				</div>
+				<div class="col-md-3 text-end">
+					<div>
+						<span class="fw-bold fs-5 text-danger">42.990.000₫</span><br>
+						<span class="text-decoration-line-through text-muted small">44.320.000₫</span>
+					</div>
+					<div class="mt-2 d-inline-flex">
+						<input type="number" class="form-control form-control-sm"
+							value="1" min="1" style="width: 60px;">
+					</div>
+				</div>
+			</div>
+
+			<hr>
+
+			<!-- Mã giảm giá -->
+			<div class="mb-3">
+				<button class="btn btn-outline-primary btn-sm">
+					<i class="bi bi-ticket-fill me-1"></i>Sử dụng mã giảm giá
+				</button>
+			</div>
+
+			<hr>
+
+			<!-- Tổng tiền -->
+			<div class="d-flex justify-content-between align-items-center mb-3">
+				<strong class="fs-5">Tổng tiền:</strong> <span
+					class="text-danger fw-bold fs-4">42.990.000₫</span>
+			</div>
+
+			<!-- Nút đặt hàng -->
+			<div class="d-grid">
+				<a th:href="@{/cart/info}" class="btn btn-danger btn-lg fw-bold">ĐẶT HÀNG NGAY</a>
+			</div>
+		</div>
+	</div>
+
+	<!-- FOOTER -->
+	<div th:replace="components/_footer.html"></div>
+
+	<script
+		th:src="@{/libraries/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js}"></script>
+</body>
+
+<script>
+	function scrollToReview() {
+		// Kích hoạt tab "Đánh giá"
+		const tabTrigger = document.querySelector('#review-tab');
+		const tab = new bootstrap.Tab(tabTrigger);
+		tab.show();
+
+		// Scroll đến vị trí tab -100px (do navbar che)
+		const reviewSection = document.querySelector('#productTab');
+		if (reviewSection) {
+			const offsetTop = reviewSection.getBoundingClientRect().top
+					+ window.pageYOffset - 100;
+			window.scrollTo({
+				top : offsetTop,
+				behavior : 'smooth'
+			});
+		}
+	}
+</script>
+
+
+</html>

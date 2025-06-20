@@ -1,50 +1,113 @@
-<div class="container-fluid bg-danger text-white py-2">
-    <div class="container d-flex justify-content-between align-items-center flex-wrap">
+<!-- IMPORTS -->
+<div th:replace="/auth/login.html"></div>
+<div th:replace="/auth/signup.html"></div>
+<div th:replace="/modals/_categoryModal.html"></div>
 
-        <!-- Logo + Danh mục -->
-        <div class="d-flex align-items-center gap-3">
-            <a href="/" class="d-flex align-items-center text-white text-decoration-none">
-                <img th:src="@{/images/logo.png}" alt="Logo" height="40" class="me-2">
-                <div class="fw-bold fs-5">NHAT NGHE</div>
-            </a>
-            <button class="btn btn-danger text-white d-flex align-items-center">
-                <i class="bi bi-list fs-5 me-1"></i> Danh mục
-            </button>
-        </div>
+<div class="container-fluid app-red text-white py-2 fixed-top shadow">
+	<div
+		class="container d-flex justify-content-between align-items-center flex-wrap">
 
-        <!-- Tìm kiếm -->
-        <form action="/search" method="get" class="d-flex flex-grow-1 mx-4">
-            <input type="text" name="keyword" class="form-control" placeholder="Bạn cần tìm gì?">
-            <button type="submit" class="btn btn-light ms-1">
-                <i class="bi bi-search"></i>
-            </button>
-        </form>
+		<!-- Logo + Danh mục -->
+		<div class="d-flex align-items-center gap-3">
+			<a href="/"
+				class="d-flex align-items-center text-white text-decoration-none">
+				<img th:src="@{/images/logo/logo_landscape_white.png}" alt="Logo"
+				height="50" class="me-2">
+			</a>
+			<button class="btn btn-danger text-white d-flex align-items-center"
+				data-bs-toggle="modal" data-bs-target="#categoryModal">
+				<i class="bi bi-list fs-5 me-1"></i> Danh mục
+			</button>
+		</div>
 
-        <!-- Các chức năng bên phải -->
-        <div class="d-flex align-items-center gap-3 text-white flex-wrap justify-content-end">
-            <div class="d-flex align-items-center">
-                <i class="bi bi-headset fs-5 me-1"></i>
-                <span>Hotline<br><strong>1900.5301</strong></span>
-            </div>
-            <div class="d-flex align-items-center">
-                <i class="bi bi-geo-alt fs-5 me-1"></i>
-                <span>Hệ thống<br><strong>Showroom</strong></span>
-            </div>
-            <div class="d-flex align-items-center">
-                <i class="bi bi-camera fs-5 me-1"></i>
-                <span>Tra cứu<br><strong>đơn hàng</strong></span>
-            </div>
-            <a href="/cart" class="text-white d-flex align-items-center text-decoration-none">
-                <i class="bi bi-cart3 fs-5 me-1 position-relative">
-                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning text-dark">
-                        0
-                    </span>
-                </i>
-                <strong>Giỏ hàng</strong>
-            </a>
-            <a href="/login" class="btn btn-outline-light d-flex align-items-center">
-                <i class="bi bi-person fs-5 me-1"></i> Đăng nhập
-            </a>
-        </div>
-    </div>
+		<!-- Tìm kiếm -->
+		<form action="/search" method="get" class="d-flex flex-grow-1 mx-4">
+			<div class="form-control d-flex p-0 justify-content-between">
+				<input type="text" name="keyword"
+					class="border-0 ps-3 flex-fill rounded"
+					placeholder="Bạn cần tìm gì?">
+				<button type="submit" class="btn btn-light ms-1 ">
+					<i class="bi bi-search"></i>
+				</button>
+			</div>
+		</form>
+
+		<!-- Các chức năng bên phải -->
+		<div
+			class="d-flex align-items-center gap-3 text-white flex-wrap justify-content-end">
+			<div class="d-flex align-items-center">
+				<i class="bi bi-headset fs-5 me-1"></i> <span>Hotline<br>
+					<strong>1900.5301</strong></span>
+			</div>
+			<div class="d-flex align-items-center">
+				<i class="bi bi-geo-alt fs-5 me-1"></i> <span>Hệ thống<br>
+					<strong>Showroom</strong></span>
+			</div>
+			<div class="d-flex align-items-center">
+				<i class="bi bi-camera fs-5 me-1"></i> <span>Tra cứu<br>
+					<strong>đơn hàng</strong></span>
+			</div>
+			<a href="/cart"
+				class="text-white d-flex align-items-center text-decoration-none"
+				title="Giỏ hàng"> <i
+				class="bi bi-cart3 fs-5 me-1 position-relative"> <span
+					class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning text-dark">
+						0 </span>
+			</i> <strong>Giỏ hàng</strong>
+			</a>
+
+			<!-- Dropdown Đăng nhập -->
+			<div class="dropdown">
+				<button
+					class="btn btn-outline-light d-flex align-items-center dropdown-toggle"
+					id="loginDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+					<i class="bi bi-person fs-5 me-1"></i> Đăng nhập
+				</button>
+				<ul class="dropdown-menu dropdown-menu-end shadow"
+					aria-labelledby="loginDropdown">
+					<li class="px-3 py-2 small text-muted">👋Xin
+						chào, xin vui lòng đăng nhập</li>
+					<hr>
+					
+					<li class="px-3 pb-2 d-flex"><a href="/order"
+						class="text-black text-decoration-none"> <i
+							class="bi bi-clipboard-fill me-1"></i> Đơn hàng của tôi
+					</a></li>
+					<li class="px-3 pb-2 d-flex"><a href="/admin"
+						class="text-black text-decoration-none"> <i
+							class="bi bi-gear-fill me-1"></i> Chức năng quản lý
+					</a></li>
+					<li class="px-3 pb-2 d-flex"><a href="/order"
+						class="text-black text-decoration-none"> <i
+							class="bi bi-box-arrow-right me-1"></i> Đăng xuất
+					</a></li>
+					<hr>
+					<li class="px-3 pb-2 d-flex">
+						<button class="btn btn-danger w-100 mb-2" data-bs-toggle="modal"
+							data-bs-target="#loginModal">Đăng nhập</button>
+						<button class="btn btn-link w-100 text-dark text-decoration-none"
+							data-bs-toggle="modal" data-bs-target="#registerModal">Đăng
+							ký</button>
+					</li>
+				</ul>
+			</div>
+
+		</div>
+	</div>
 </div>
+
+<style>
+.dropdown-menu {
+	min-width: 250px;
+	border-radius: 8px;
+}
+
+.dropdown-menu button.btn-link:hover {
+	text-decoration: underline;
+	color: #e30019 !important;
+}
+
+.dropdown-menu button {
+	transition: all 0.2s ease-in-out;
+}
+</style>

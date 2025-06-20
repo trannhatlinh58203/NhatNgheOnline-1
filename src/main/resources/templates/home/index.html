@@ -3,7 +3,8 @@
 
 <head>
 <meta charset="UTF-8">
-<link rel="shortcut icon" type="x-icon" th:href="@{/images/logo.png}">
+<link rel="shortcut icon" type="x-icon"
+	th:href="@{/images/logo/logo.png}">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Trang Chủ</title>
 
@@ -19,13 +20,74 @@
 
 <body>
 
+	<!-- HEADER -->
 	<header class="row">
 		<!-- NAV MENU -->
 		<div th:replace="/components/_menu.html"></div>
 	</header>
-	
 
-	<script th:src="@{'/libraries/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js'}"></script>
+	<!-- BODY -->
+	<div class="container-fluid m-0 p-0">
+		<!-- BANNER -->
+		<div class="row">
+			<div class="col-1"></div>
+			<div class="col-10">
+				<div class="row">
+					<div th:replace="/components/_banner.html"></div>
+				</div>
+			</div>
+			<div class="col-1"></div>
+		</div>
+
+
+		<nav class="navbar navbar-expand-sm my-3 app-red">
+			<div class="container-fluid">
+				<ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+					<li class="nav-item mx-2"><a
+						class="border border-2 fw-bold rounded rounded-4 px-4 py-2 text-center btn btn-default text-white"
+						href="#">BEST SELLER</a></li>
+					<li class="nav-item mx-2"><a
+						class="border border-2 fw-bold rounded rounded-4 px-4 py-2 text-center btn btn-default text-white"
+						href="#">LAPTOP HS-SV GIÁ RẺ</a></li>
+					<li class="nav-item mx-2"><a
+						class="border border-2 fw-bold rounded rounded-4 px-4 py-2 text-center btn btn-default text-white"
+						href="#">LAPTOP VĂN PHÒNG GIÁ RẺ</a></li>
+					<li class="nav-item mx-2"><a
+						class="border border-2 fw-bold rounded rounded-4 px-4 py-2 text-center btn btn-default text-white"
+						href="#">LAPTOP VĂN PHÒNG CAO CẤP</a></li>
+				</ul>
+			</div>
+		</nav>
+
+		<div class="row">
+			<div class="col-1"></div>
+			<!-- BEST SELLER -->
+			<div class="col-10">
+				<div class="row">
+					<div th:replace="/components/_product_card.html"></div>
+				</div>
+			</div>
+
+
+			<!-- LAPTOP HS-SV GIÁ RẺ -->
+
+
+			<!-- LAPTOP VĂN PHÒNG GIÁ RẺ -->
+
+
+			<!-- LAPTOP VĂN PHÒNG CAO CẤP -->
+
+			<div class="col-1"></div>
+		</div>
+	</div>
+
+
+	<!-- Footer -->
+	<div th:replace="components/_footer.html"></div>
+
+
+	<script
+		th:src="@{'/libraries/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js'}"></script>
 </body>
 
 </html>

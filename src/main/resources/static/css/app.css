@@ -1,1 +1,23 @@
 @charset "UTF-8";
+
+body {
+    padding-top: 70px !important;
+    margin: 0px;
+    background-color: #ececec;
+}
+.app-red{
+	background-color: #e30019;
+}
+
+.bg-color{
+	background-color: #ececec;
+}
+
+.card {
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
