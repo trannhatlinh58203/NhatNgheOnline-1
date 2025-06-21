@@ -1,7 +1,7 @@
 @charset "UTF-8";
 
 body {
-    padding-top: 70px !important;
+    padding-top: 65px !important;
     margin: 0px;
     background-color: #ececec;
 }
@@ -20,4 +20,13 @@ body {
 .card:hover {
     transform: scale(1.05);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.nav-btn {
+	color: white;
+    transition: color 0.2s ease-in-out;
+}
+.nav-btn:hover{
+	color: #e30019;
+	background-color: white;
 }
