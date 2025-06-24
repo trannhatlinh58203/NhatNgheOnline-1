@@ -1,45 +1,52 @@
 package com.poly.Model;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Entity
+@Table(name = "Users")
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class User {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "UserID")
 	private Integer userID;
 
+	@Column(name = "FullName", nullable = false)
 	private String fullName;
 
-	@Column(unique = true)
+	@Column(name = "Email", nullable = false, unique = true)
 	private String email;
 
+	@Column(name = "PasswordHash", nullable = false)
 	private String passwordHash;
 
+	@Column(name = "Address")
 	private String address;
 
+	@Column(name = "Phone")
 	private String phone;
 
-	@Enumerated(EnumType.STRING)
-	private Role role;
+	@Column(name = "Role", nullable = false)
+	private String role;
 
-	private Date createdAt;
+	@Column(name = "CreatedAt")
+	private LocalDateTime createdAt;
 
-	private Date lastLogin;
+	@Column(name = "LastLogin")
+	private LocalDateTime lastLogin;
 
+	@Column(name = "LastAction")
 	private String lastAction;
 
+	@Column(name = "LastIP")
 	private String lastIP;
-
-	public enum Role {
-		Customer, Staff, Admin
-	}
 }

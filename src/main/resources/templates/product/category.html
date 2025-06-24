@@ -27,7 +27,45 @@
 
 	<!-- BODY -->
 	<div class="container py-4">
-		<h4>Danh mục</h4>
+		<div class="container py-4">
+		<!-- Tiêu đề tìm kiếm -->
+        <h4 class="mb-3">
+            Kết quả tìm kiếm theo danh mục:
+            <span class="text-primary" th:text="${categoryName}">keyword</span>
+        </h4>
+		
+    <div class="d-flex justify-content-between mb-3">
+        <form class="d-flex" th:action="@{'/product/category/' + ${categoryId}}" method="get">
+            <select name="brand" class="form-select me-2" onchange="this.form.submit()">
+                <option value="">Tất cả hãng</option>
+                <option th:each="b : ${brands}" th:value="${b}" th:text="${b}" 
+                        th:selected="${b == selectedBrand}"></option>
+            </select>
+            <select name="sort" class="form-select" onchange="this.form.submit()">
+                <option value="">Nổi bật</option>
+                <option value="asc" th:selected="${selectedSort == 'asc'}">Giá tăng dần</option>
+                <option value="desc" th:selected="${selectedSort == 'desc'}">Giá giảm dần</option>
+            </select>
+        </form>
+    </div>
+
+    <!-- Hiển thị sản phẩm -->
+    <div class="row g-3">
+        <div class="col-md-3" th:each="p : ${products}">
+            <a th:href="@{'/product/detail/' + ${p.productID}}" class="text-decoration-none text-dark">
+                <div class="card border-0 shadow-sm h-100">
+                    <img th:src="@{'/images/products/' + ${p.imageURL}}" class="card-img-top p-3" alt="Ảnh">
+                    <div class="card-body">
+                        <h6 class="card-title text-truncate-2" th:text="${p.productName}">Tên</h6>
+                        <p class="text-danger fw-semibold"
+                           th:text="${#numbers.formatDecimal(p.price, 0, 'COMMA', 0, 'POINT')} + '₫'">Giá</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+
 	</div>
 
 	<!-- FOOTER -->
@@ -37,25 +75,14 @@
 		th:src="@{/libraries/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js}"></script>
 </body>
 
-<script>
-	function scrollToReview() {
-		// Kích hoạt tab "Đánh giá"
-		const tabTrigger = document.querySelector('#review-tab');
-		const tab = new bootstrap.Tab(tabTrigger);
-		tab.show();
+<style>
+.text-truncate-2 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
 
-		// Scroll đến vị trí tab -100px (do navbar che)
-		const reviewSection = document.querySelector('#productTab');
-		if (reviewSection) {
-			const offsetTop = reviewSection.getBoundingClientRect().top
-					+ window.pageYOffset - 100;
-			window.scrollTo({
-				top : offsetTop,
-				behavior : 'smooth'
-			});
-		}
-	}
-</script>
-
+</style>
 
 </html>

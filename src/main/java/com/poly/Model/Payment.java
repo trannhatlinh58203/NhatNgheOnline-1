@@ -1,43 +1,43 @@
 package com.poly.Model;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
-import lombok.AllArgsConstructor;
+import jakarta.persistence.Table;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Entity
+@Table(name = "Payments")
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class Payment {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "PaymentID")
 	private Integer paymentID;
 
 	@OneToOne
-	@JoinColumn(name = "orderID")
+	@JoinColumn(name = "OrderID", nullable = false)
 	private Order order;
 
-	@Enumerated(EnumType.STRING)
-	private PaymentMethod paymentMethod;
+	@Column(name = "PaymentMethod", nullable = false)
+	private String paymentMethod;
 
-	private Date paymentDate;
+	@Column(name = "PaymentDate")
+	private LocalDateTime paymentDate;
 
+	@Column(name = "PaymentStatus", nullable = false)
 	private String paymentStatus;
 
+	@Column(name = "TransactionID")
 	private String transactionID;
 
-	public enum PaymentMethod {
-		Cash, CreditCard, BankTransfer, VNPay, MoMo
-	}
+	@Column(name = "PaymentNote", length = 500)
+	private String paymentNote;
 }

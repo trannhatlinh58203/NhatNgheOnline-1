@@ -1,6 +1,6 @@
 package com.poly.Model;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -9,34 +9,35 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import lombok.AllArgsConstructor;
+import jakarta.persistence.Table;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Entity
+@Table(name = "Reviews")
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class Review {
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "ReviewID")
 	private Integer reviewID;
 
 	@ManyToOne
-	@JoinColumn(name = "productID")
+	@JoinColumn(name = "ProductID", nullable = false)
 	private Product product;
 
 	@ManyToOne
-	@JoinColumn(name = "userID")
+	@JoinColumn(name = "UserID", nullable = false)
 	private User user;
 
-	private int rating;
+	@Column(name = "Rating")
+	private Integer rating;
 
-	@Column(columnDefinition = "NVARCHAR(MAX)")
+	@Column(name = "Comment", columnDefinition = "NVARCHAR(MAX)")
 	private String comment;
 
-	private Date createdAt;
+	@Column(name = "CreatedAt")
+	private LocalDateTime createdAt;
 
-	private boolean approved;
+	@Column(name = "Approved")
+	private Boolean approved;
 }

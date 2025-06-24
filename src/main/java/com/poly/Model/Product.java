@@ -1,6 +1,7 @@
 package com.poly.Model;
 
-import java.util.Date;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -9,34 +10,44 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import lombok.AllArgsConstructor;
+import jakarta.persistence.Table;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Entity
+@Table(name = "Products")
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class Product {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "ProductID")
 	private Integer productID;
 
+	@Column(name = "ProductName", nullable = false)
 	private String productName;
 
-	@Column(columnDefinition = "NVARCHAR(MAX)")
+	@Column(name = "Description", columnDefinition = "NVARCHAR(MAX)")
 	private String description;
 
-	private double price;
+	@Column(name = "BrandName")
+	private String brandName;
 
+	@Column(name = "Specifications", columnDefinition = "NVARCHAR(MAX)")
+	private String specifications;
+
+	@Column(name = "Price", nullable = false)
+	private BigDecimal price;
+
+	@Column(name = "ImageURL")
 	private String imageURL;
 
-	private int stockQuantity;
+	@Column(name = "StockQuantity", nullable = false)
+	private Integer stockQuantity;
+
+	@Column(name = "CreatedAt")
+	private LocalDateTime createdAt;
 
 	@ManyToOne
-	@JoinColumn(name = "categoryID")
+	@JoinColumn(name = "CategoryID", nullable = false)
 	private Category category;
-
-	private Date createdAt;
 }
