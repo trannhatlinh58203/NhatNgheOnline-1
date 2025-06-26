@@ -22,6 +22,7 @@ import com.poly.Service.UserService;
 public class UserServiceImpl implements UserService, UserDetailsService {
 	@Autowired
 	private UserRepository userRepository;
+
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
@@ -41,6 +42,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 		userRepository.deleteById(id);
 	}
 
+	// auth
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 		User user = userRepository.findByEmail(email);

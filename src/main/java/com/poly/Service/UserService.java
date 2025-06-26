@@ -20,6 +20,7 @@ public interface UserService {
 
 	void deleteById(Integer id);
 
+	// auth
 	UserDetails loadUserByUsername(String email);
 
 	boolean register(RegisterRequest request);

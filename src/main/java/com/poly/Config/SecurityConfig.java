@@ -29,8 +29,8 @@ public class SecurityConfig {
 						"/api/**", "/components/**", "/libraries/**", "/search/**", "/auth/**")
 				.permitAll().requestMatchers("/checkout/**", "/user/**", "/cart/**").authenticated().anyRequest()
 				.authenticated())
-				.formLogin(form -> form.loginPage("/custom-login").loginProcessingUrl("/login")
-						.usernameParameter("email").passwordParameter("password").successHandler((req, res, auth) -> {
+				.formLogin(form -> form.loginPage("/").loginProcessingUrl("/login").usernameParameter("email")
+						.passwordParameter("password").successHandler((req, res, auth) -> {
 							res.setStatus(200);
 						}).failureHandler((req, res, ex) -> {
 							res.setStatus(401);

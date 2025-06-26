@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.poly.Model.Cart;
+import com.poly.Model.User;
 
 public interface CartService {
 	List<Cart> findAll();
@@ -14,4 +15,15 @@ public interface CartService {
 	Cart save(Cart cart);
 
 	void deleteById(Integer id);
+
+	// cart
+	List<Cart> getCartItems(User user);
+
+	void addToCart(User user, Integer productId, Integer quantity);
+
+	void updateQuantity(User user, Integer productId, Integer quantity);
+
+	void removeFromCart(User user, Integer productId);
+
+	double getTotalPrice(User user);
 }

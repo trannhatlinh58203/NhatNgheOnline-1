@@ -77,9 +77,11 @@
 				class="text-white d-flex align-items-center text-decoration-none requires-login"
 				title="Giỏ hàng"> <i
 				class="bi bi-cart3 fs-5 me-1 position-relative"> <span
-					class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning text-dark">0</span>
+					class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning text-dark"
+					th:text="${cartItemCount}">0</span>
 			</i> <strong>Giỏ hàng</strong>
 			</a>
+
 
 			<!-- Đăng nhập Dropdown -->
 			<div class="dropdown">
@@ -94,9 +96,9 @@
 					<li class="px-3 py-2 small text-muted"
 						th:if="${currentUser == null}">👋 Xin chào, vui lòng đăng
 						nhập</li>
-					<li class="px-3 py-2 text-muted"
-						th:if="${currentUser != null}">👋 Xin chào, <strong><span
-						th:text="${currentUser.fullName}">Tên người dùng</span></strong>
+					<li class="px-3 py-2 text-muted" th:if="${currentUser != null}">👋
+						Xin chào, <strong><span th:text="${currentUser.fullName}">Tên
+								người dùng</span></strong>
 					</li>
 
 					<hr class="mt-0 mx-3">

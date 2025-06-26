@@ -41,3 +41,9 @@ a.requires-login::after {
     border-radius: 4px;
     display: none;
 }
+
+@keyframes flashWhite {
+    0%   { filter: brightness(100%); }
+    50%  { filter: brightness(150%); }
+    100% { filter: brightness(100%); }
+}
