@@ -19,16 +19,11 @@ public class AppController {
 
 	@GetMapping("/")
 	public String home(Model model) {
-		// Lấy 8 sản phẩm ngẫu nhiên theo danh mục
-		List<Product> bestSellerPCs = productRepository.findTop8ByCategoryNameRandom("PC");
-		List<Product> bestSellerLaptops = productRepository.findTop8ByCategoryNameRandom("Laptop");
-		List<Product> bestSellerKeyboards = productRepository.findTop8ByCategoryNameRandom("Bàn phím");
-		List<Product> cheapMonitors = productRepository.findTop8ByCategoryNameRandom("Màn hình");
-
-		model.addAttribute("bestSellerPCs", bestSellerPCs);
-		model.addAttribute("bestSellerLaptops", bestSellerLaptops);
-		model.addAttribute("bestSellerKeyboards", bestSellerKeyboards);
-		model.addAttribute("cheapMonitors", cheapMonitors);
+		// Tiếp tục phần lấy sản phẩm như cũ
+		model.addAttribute("bestSellerPCs", productRepository.findTop8ByCategoryNameRandom("PC"));
+		model.addAttribute("bestSellerLaptops", productRepository.findTop8ByCategoryNameRandom("Laptop"));
+		model.addAttribute("bestSellerKeyboards", productRepository.findTop8ByCategoryNameRandom("Bàn phím"));
+		model.addAttribute("cheapMonitors", productRepository.findTop8ByCategoryNameRandom("Màn hình"));
 
 		return "home/index";
 	}

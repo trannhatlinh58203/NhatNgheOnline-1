@@ -8,4 +8,7 @@ import com.poly.Model.User;
 public interface UserRepository extends JpaRepository<User, Integer> {
 	// Optional: tìm user bằng email
 	User findByEmail(String email);
+
+	// Tìm kiếm theo email
+	boolean existsByEmail(String email);
 }

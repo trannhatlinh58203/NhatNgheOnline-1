@@ -23,17 +23,26 @@
 
 			<div class="modal-body">
 				<div class="mb-2">
-					<input type="email" class="form-control" placeholder="Email">
+					<input type="email" class="form-control" id="registerEmail"
+						placeholder="Email">
+					<div class="invalid-feedback" id="registerEmailError"></div>
 				</div>
 				<div class="mb-2">
-					<input type="text" class="form-control" placeholder="Họ">
+					<input type="text" class="form-control" id="registerFirstName"
+						placeholder="Họ">
+					<div class="invalid-feedback" id="registerFirstNameError"></div>
 				</div>
 				<div class="mb-2">
-					<input type="text" class="form-control" placeholder="Tên">
+					<input type="text" class="form-control" id="registerLastName"
+						placeholder="Tên">
+					<div class="invalid-feedback" id="registerLastNameError"></div>
 				</div>
 				<div class="mb-3">
-					<input type="password" class="form-control" placeholder="Mật khẩu">
+					<input type="password" class="form-control" id="registerPassword"
+						placeholder="Mật khẩu">
+					<div class="invalid-feedback" id="registerPasswordError"></div>
 				</div>
+
 
 				<button class="btn btn-danger w-100 fw-bold mb-3">TẠO TÀI
 					KHOẢN</button>
@@ -62,3 +71,55 @@
 		</div>
 	</div>
 </div>
+
+<script>
+document.querySelector('#registerModal .btn.btn-danger').addEventListener('click', function () {
+    // Clear previous error states
+    ['Email', 'FirstName', 'LastName', 'Password'].forEach(field => {
+        document.getElementById(`register${field}`).classList.remove('is-invalid');
+        document.getElementById(`register${field}Error`).innerText = '';
+    });
+
+    const email = document.getElementById('registerEmail').value.trim();
+    const firstName = document.getElementById('registerFirstName').value.trim();
+    const lastName = document.getElementById('registerLastName').value.trim();
+    const password = document.getElementById('registerPassword').value;
+
+    fetch('/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, firstName, lastName, password })
+    })
+    .then(async res => {
+        if (!res.ok) {
+            const errors = await res.json();
+            for (const field in errors) {
+                const key = 'register' + field.charAt(0).toUpperCase() + field.slice(1);
+                document.getElementById(key).classList.add('is-invalid');
+                document.getElementById(key + 'Error').innerText = errors[field];
+            }
+        } else {
+            const msg = await res.json();
+            bootstrap.Modal.getInstance(document.getElementById('registerModal')).hide();
+
+            // Dùng modal tuỳ chỉnh để hiện thông báo thành công
+            showCustomMessage({
+                title: "Chúc mừng!",
+                message: msg.message || "Đăng ký thành công!",
+                type: "success"
+            });
+        }
+    })
+    .catch(err => {
+        // Dùng modal tuỳ chỉnh để hiện lỗi
+        showCustomMessage({
+            title: "Lỗi",
+            message: "Có lỗi xảy ra khi đăng ký. Vui lòng thử lại sau.",
+            type: "error"
+        });
+    });
+
+});
+
+</script>
+
