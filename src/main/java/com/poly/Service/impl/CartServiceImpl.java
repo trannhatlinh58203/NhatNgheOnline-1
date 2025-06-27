@@ -5,18 +5,22 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.poly.Model.Cart;
+import com.poly.Model.Order;
+import com.poly.Model.OrderItem;
 import com.poly.Model.Product;
 import com.poly.Model.User;
 import com.poly.Repository.CartRepository;
+import com.poly.Repository.OrderItemRepository;
+import com.poly.Repository.OrderRepository;
 import com.poly.Repository.ProductRepository;
 import com.poly.Service.CartService;
-
-import jakarta.transaction.Transactional;
 
 @Service
 public class CartServiceImpl implements CartService {
@@ -26,6 +30,11 @@ public class CartServiceImpl implements CartService {
 
 	@Autowired
 	private ProductRepository productRepository;
+
+	@Autowired
+	private OrderRepository orderRepository;
+	@Autowired
+	private OrderItemRepository orderItemRepository;
 
 	public List<Cart> findAll() {
 		return cartRepository.findAll();
@@ -47,6 +56,12 @@ public class CartServiceImpl implements CartService {
 	@Override
 	public List<Cart> getCartItems(User user) {
 		return cartRepository.findByUser(user);
+	}
+
+	@Override
+	@Transactional
+	public void clearCart(User user) {
+		cartRepository.deleteByUser(user);
 	}
 
 	@Override
@@ -76,6 +91,32 @@ public class CartServiceImpl implements CartService {
 			newItem.setAddedAt(LocalDateTime.now());
 			cartRepository.save(newItem);
 		}
+	}
+
+	public int createOrder(User user, String fullName, String phone, String email, String address, String note,
+			String shippingMethod, boolean invoice, List<Cart> cartItems) {
+// Tạo đơn hàng
+		Order order = new Order();
+		order.setUser(user);
+		order.setShippingAddress(address);
+		order.setStatus("Chờ thanh toán");
+		order.setTrackingCode(UUID.randomUUID().toString()); // Mã tracking ngẫu nhiên
+		orderRepository.save(order);
+
+		// Thêm các item
+		for (Cart item : cartItems) {
+			OrderItem orderItem = new OrderItem();
+			orderItem.setOrder(order);
+			orderItem.setProduct(item.getProduct());
+			orderItem.setQuantity(item.getQuantity());
+			orderItem.setPrice(item.getProduct().getPrice());
+			orderItemRepository.save(orderItem);
+		}
+
+		// Xoá cart
+		cartRepository.deleteByUser(user);
+
+		return order.getOrderID(); // trả về để redirect đến bước tiếp theo
 	}
 
 	@Override

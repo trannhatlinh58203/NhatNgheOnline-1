@@ -56,22 +56,23 @@
 			</div>
 
 			<!-- Thông tin khách -->
-			<form th:action="@{/cart/checkout}" method="post" th:object="${user}">
+			<form th:action="@{/cart/info/next}" method="post"
+				th:object="${user}">
 				<h6 class="mb-3">Thông tin khách mua hàng</h6>
 
 				<!-- Giới tính -->
-				<!-- <div class="d-flex mb-3 gap-3">
+				<div class="d-flex mb-3 gap-3">
 					<div class="form-check">
-						<input class="form-check-input" type="radio" name="gender"
-							id="male" value="male" checked> <label
-							class="form-check-label" for="male">Anh</label>
+						<input class="form-check-input" type="radio" th:field="*{gender}"
+							value="true" id="male"> <label class="form-check-label"
+							for="male">Anh</label>
 					</div>
 					<div class="form-check">
-						<input class="form-check-input" type="radio" name="gender"
-							id="female" value="female"> <label
+						<input class="form-check-input" type="radio" th:field="*{gender}"
+							value="false" id="female"> <label
 							class="form-check-label" for="female">Chị</label>
 					</div>
-				</div> -->
+				</div>
 
 				<!-- Họ tên + Điện thoại -->
 				<div class="row g-3 mb-3">
@@ -115,15 +116,22 @@
 					<h6 class="fw-bold mb-3">Dịch vụ giao hàng</h6>
 					<div class="d-flex align-items-center gap-3 mb-3">
 						<select class="form-select" name="shippingMethod"
+							id="shippingMethod" onchange="updateShippingFee()"
 							style="max-width: 350px;">
-							<option value="standard">Giao hàng tiêu chuẩn (30.000₫ -
-								3-5 ngày)</option>
-							<option value="express">Giao hàng nhanh (50.000₫ - 1-2
-								ngày)</option>
-							<option value="pickup">Nhận tại cửa hàng (Miễn phí)</option>
+							<option value="standard" data-fee="30000">Giao hàng tiêu
+								chuẩn (30.000₫ - 3-5 ngày)</option>
+							<option value="express" data-fee="50000">Giao hàng nhanh
+								(50.000₫ - 1-2 ngày)</option>
+							<option value="pickup" data-fee="0">Nhận tại cửa hàng
+								(Miễn phí)</option>
 						</select>
 					</div>
 				</div>
+
+				<!-- Hidden input để gửi shippingFee -->
+				<input type="hidden" name="shippingFee" id="shippingFeeInput"
+					value="30000" />
+
 
 				<!-- Tổng tiền -->
 				<div class="d-flex justify-content-between align-items-center mb-4">
@@ -139,6 +147,7 @@
 						HÀNG NGAY</button>
 				</div>
 			</form>
+
 		</div>
 	</div>
 
@@ -167,6 +176,13 @@
 				behavior : 'smooth'
 			});
 		}
+	}
+	
+	function updateShippingFee() {
+		const method = document.getElementById("shippingMethod");
+		const selectedOption = method.options[method.selectedIndex];
+		const fee = selectedOption.getAttribute("data-fee");
+		document.getElementById("shippingFeeInput").value = fee;
 	}
 </script>
 

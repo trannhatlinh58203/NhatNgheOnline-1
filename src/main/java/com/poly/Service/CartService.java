@@ -19,6 +19,8 @@ public interface CartService {
 	// cart
 	List<Cart> getCartItems(User user);
 
+	void clearCart(User user);
+
 	void addToCart(User user, Integer productId, Integer quantity);
 
 	void updateQuantity(User user, Integer productId, Integer quantity);
@@ -26,4 +28,7 @@ public interface CartService {
 	void removeFromCart(User user, Integer productId);
 
 	double getTotalPrice(User user);
+
+	int createOrder(User user, String fullName, String phone, String email, String address, String note,
+			String shippingMethod, boolean invoice, List<Cart> cartItems);
 }

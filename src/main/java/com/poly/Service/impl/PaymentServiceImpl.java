@@ -6,7 +6,9 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.poly.Model.Order;
 import com.poly.Model.Payment;
 import com.poly.Repository.PaymentRepository;
 import com.poly.Service.PaymentService;
@@ -26,6 +28,12 @@ public class PaymentServiceImpl implements PaymentService {
 
 	public Payment save(Payment payment) {
 		return repo.save(payment);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public Payment findByOrder(Order order) {
+		return repo.findByOrder(order);
 	}
 
 	public void deleteById(Integer id) {

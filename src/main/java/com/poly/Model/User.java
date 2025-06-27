@@ -1,5 +1,6 @@
 package com.poly.Model;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
@@ -35,11 +36,20 @@ public class User {
 	@Column(name = "Phone")
 	private String phone;
 
+	@Column(name = "Gender")
+	private Boolean gender;
+
+	@Column(name = "BirthDay")
+	private LocalDate birthDay;
+
 	@Column(name = "Role", nullable = false)
 	private String role;
 
 	@Column(name = "CreatedAt")
 	private LocalDateTime createdAt;
+
+	@Column(name = "ImageURL")
+	private String imageUrl;
 
 	@Column(name = "LastLogin")
 	private LocalDateTime lastLogin;

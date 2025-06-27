@@ -1,12 +1,12 @@
-﻿-- Đảm bảo không có kết nối nào đang dùng database trước khi xóa
+﻿-- Chuyển sang chế độ đơn người dùng để xóa DB nếu đang có kết nối
 USE master;
 ALTER DATABASE nhatNgheOnlineDB SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
 
--- Xóa database
+-- Xóa database nếu tồn tại
 DROP DATABASE IF EXISTS nhatNgheOnlineDB;
 GO
 
--- Tạo database
+-- Tạo lại database
 CREATE DATABASE nhatNgheOnlineDB;
 GO
 
@@ -14,7 +14,9 @@ GO
 USE nhatNgheOnlineDB;
 GO
 
--- Bảng Người Dùng
+---------------------------------------------------------
+-- 1. Bảng Người Dùng
+---------------------------------------------------------
 CREATE TABLE Users (
     UserID INT PRIMARY KEY IDENTITY(1,1),
     FullName NVARCHAR(100) NOT NULL,
@@ -22,14 +24,19 @@ CREATE TABLE Users (
     PasswordHash NVARCHAR(255) NOT NULL,
     Address NVARCHAR(255),
     Phone NVARCHAR(20),
+    Gender BIT DEFAULT 1,
+    BirthDay DATE,
     Role NVARCHAR(20) NOT NULL CHECK (Role IN ('Customer', 'Staff', 'Admin')),
     CreatedAt DATETIME DEFAULT GETDATE(),
+    ImageURL NVARCHAR(255),
     LastLogin DATETIME NULL,
     LastAction NVARCHAR(255),
     LastIP NVARCHAR(45)
 );
 
--- Bảng Danh Mục
+---------------------------------------------------------
+-- 2. Bảng Danh Mục
+---------------------------------------------------------
 CREATE TABLE Categories (
     CategoryID INT PRIMARY KEY IDENTITY(1,1),
     CategoryName NVARCHAR(100) NOT NULL,
@@ -37,13 +44,15 @@ CREATE TABLE Categories (
     FOREIGN KEY (ParentID) REFERENCES Categories(CategoryID)
 );
 
--- Bảng Sản Phẩm (có thêm thông số)
+---------------------------------------------------------
+-- 3. Bảng Sản Phẩm
+---------------------------------------------------------
 CREATE TABLE Products (
     ProductID INT PRIMARY KEY IDENTITY(1,1),
     ProductName NVARCHAR(200) NOT NULL,
     Description NVARCHAR(MAX),
     BrandName NVARCHAR(255),
-    Specifications NVARCHAR(MAX), -- Thêm cột này
+    Specifications NVARCHAR(MAX),
     Price DECIMAL(18,2) NOT NULL,
     ImageURL NVARCHAR(255),
     StockQuantity INT NOT NULL DEFAULT 0,
@@ -52,7 +61,30 @@ CREATE TABLE Products (
     FOREIGN KEY (CategoryID) REFERENCES Categories(CategoryID) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
--- Bảng Giỏ Hàng
+---------------------------------------------------------
+-- 4. Bảng Hình ảnh sản phẩm
+---------------------------------------------------------
+CREATE TABLE ProductImages (
+    ImageID INT PRIMARY KEY IDENTITY(1,1),
+    ProductID INT NOT NULL,
+    ImageURL NVARCHAR(255) NOT NULL,
+    FOREIGN KEY (ProductID) REFERENCES Products(ProductID) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+---------------------------------------------------------
+-- 5. Bảng Phương Thức Thanh Toán (Moved up!)
+---------------------------------------------------------
+CREATE TABLE PaymentMethods (
+    MethodID INT PRIMARY KEY IDENTITY(1,1),
+    Code NVARCHAR(50) UNIQUE NOT NULL,
+    Name NVARCHAR(100) NOT NULL,
+    Description NVARCHAR(255),
+    IconURL NVARCHAR(255)
+);
+
+---------------------------------------------------------
+-- 6. Bảng Giỏ Hàng
+---------------------------------------------------------
 CREATE TABLE Carts (
     CartID INT PRIMARY KEY IDENTITY(1,1),
     UserID INT NOT NULL,
@@ -63,7 +95,9 @@ CREATE TABLE Carts (
     FOREIGN KEY (ProductID) REFERENCES Products(ProductID) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
--- Bảng Đơn Hàng
+---------------------------------------------------------
+-- 7. Bảng Đơn Hàng
+---------------------------------------------------------
 CREATE TABLE Orders (
     OrderID INT PRIMARY KEY IDENTITY(1,1),
     UserID INT NOT NULL,
@@ -74,7 +108,9 @@ CREATE TABLE Orders (
     FOREIGN KEY (UserID) REFERENCES Users(UserID) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
--- Bảng Chi Tiết Đơn Hàng
+---------------------------------------------------------
+-- 8. Bảng Chi Tiết Đơn Hàng
+---------------------------------------------------------
 CREATE TABLE OrderItems (
     OrderItemID INT PRIMARY KEY IDENTITY(1,1),
     OrderID INT NOT NULL,
@@ -85,19 +121,24 @@ CREATE TABLE OrderItems (
     FOREIGN KEY (ProductID) REFERENCES Products(ProductID) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
--- Bảng Thanh Toán
+---------------------------------------------------------
+-- 9. Bảng Thanh Toán (sau khi có PaymentMethods)
+---------------------------------------------------------
 CREATE TABLE Payments (
     PaymentID INT PRIMARY KEY IDENTITY(1,1),
     OrderID INT NOT NULL UNIQUE,
-    PaymentMethod NVARCHAR(50) NOT NULL CHECK (PaymentMethod IN ('Cash', 'VNPay', 'MoMo', 'BankTransfer', 'VietQR')),
+    PaymentMethodID INT NOT NULL,
     PaymentDate DATETIME DEFAULT GETDATE(),
     PaymentStatus NVARCHAR(50) NOT NULL DEFAULT N'Chưa thanh toán',
     TransactionID NVARCHAR(100),
     PaymentNote NVARCHAR(500),
-    FOREIGN KEY (OrderID) REFERENCES Orders(OrderID) ON DELETE CASCADE ON UPDATE CASCADE
+    FOREIGN KEY (OrderID) REFERENCES Orders(OrderID) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (PaymentMethodID) REFERENCES PaymentMethods(MethodID)
 );
 
--- Bảng Đánh Giá
+---------------------------------------------------------
+-- 10. Bảng Đánh Giá
+---------------------------------------------------------
 CREATE TABLE Reviews (
     ReviewID INT PRIMARY KEY IDENTITY(1,1),
     ProductID INT NOT NULL,
@@ -110,13 +151,22 @@ CREATE TABLE Reviews (
     FOREIGN KEY (UserID) REFERENCES Users(UserID) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
--- Chỉ mục hiệu suất
+---------------------------------------------------------
+-- 11. Indexes
+---------------------------------------------------------
 CREATE INDEX IX_Products_CategoryID ON Products(CategoryID);
 CREATE INDEX IX_Carts_UserID ON Carts(UserID);
 CREATE INDEX IX_Carts_ProductID ON Carts(ProductID);
 CREATE INDEX IX_OrderItems_OrderID ON OrderItems(OrderID);
 CREATE INDEX IX_Reviews_ProductID ON Reviews(ProductID);
 
+---------------------------------------------------------
+-- 12. Dữ liệu mẫu: Phương thức thanh toán
+---------------------------------------------------------
+INSERT INTO PaymentMethods (Code, Name, Description, IconURL) VALUES
+('cod', N'Thanh toán khi giao hàng', N'Thanh toán tiền mặt khi nhận hàng', '/images/icons/cod.png'),
+('vnpay', 'VNPay', N'Thanh toán qua cổng VNPay', '/images/icons/vnpay.png'),
+('qrpay', N'Thanh toán bằng QR', N'Sử dụng mã QR để thanh toán qua ngân hàng hoặc ví', '/images/icons/qr.png');
 
 
 
@@ -231,3 +281,4 @@ INSERT INTO Products (ProductName, Description, BrandName, Specifications, Price
 ('Samsung T5 1TB', N'SSD di động', 'Samsung', '1TB, USB-C', 2490000, '78.png', 10, 10),
 ('JBL Flip 6', N'Loa di động', 'JBL', 'Bluetooth 5.3', 1290000, '79.png', 9, 10),
 ('Apple MagSafe Charger', N'Sạc không dây', 'Apple', 'MagSafe 15W', 1290000, '80.png', 7, 10);
+

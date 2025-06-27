@@ -86,10 +86,12 @@
 
 				<!-- Mua ngay -->
 				<div class="d-grid mb-3">
-					<a href="/checkout"
+					<a
+						th:href="@{/cart/buy-now(productId=${product.productID}, quantity=1)}"
 						class="btn btn-danger btn-lg fw-bold requires-login"> <i
 						class="bi bi-lightning-charge-fill me-1"></i> Mua ngay
 					</a>
+
 				</div>
 
 				<hr>
@@ -280,7 +282,6 @@
 .main-image-flash {
 	animation: flashWhite 0.3s ease-in-out;
 }
-
 </style>
 </body>
 </html>

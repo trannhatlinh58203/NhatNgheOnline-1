@@ -61,11 +61,31 @@
 				<h4 class="fw-bold mb-4 text-success">ĐẶT HÀNG THÀNH CÔNG!</h4>
 				<img src="/images/order_success.png" alt="Đặt hàng thành công"
 					style="max-width: 180px;" class="mb-4">
-				<p class="mb-0 fs-5">
-					Hoá đơn sẽ được gửi qua email của bạn, cảm ơn bạn đã lựa chọn <strong>Nhất
-						Nghệ Online</strong>
+
+				<p class="mb-1 fs-5">
+					Cảm ơn <strong th:text="${order.user.fullName}">Khách hàng</strong>
+					đã đặt hàng!
 				</p>
-				<a href="/account/order-history" class="btn btn-outline-primary mt-4">Xem đơn hàng</a>
+				<p class="mb-1">
+					Mã đơn hàng: <strong th:text="${order.orderID}">#ID</strong>
+				</p>
+				<p class="mb-1">
+					Ngày đặt: <strong
+						th:text="${formattedDate}">--</strong>
+				</p>
+				<p class="mb-1">
+					Phương thức thanh toán: <strong
+						th:text="${payment.paymentMethod.name}">COD</strong>
+				</p>
+				<p class="mb-1">
+					Trạng thái thanh toán: <span
+						th:classappend="${payment.paymentStatus == 'Đã thanh toán'} ? 'text-success fw-bold' : 'text-warning'"
+						th:text="${payment.paymentStatus}">Đã thanh toán</span>
+				</p>
+
+				<a href="/account/order-history"
+					class="btn btn-outline-primary mt-4">Xem đơn hàng</a>
+
 			</div>
 		</div>
 	</div>

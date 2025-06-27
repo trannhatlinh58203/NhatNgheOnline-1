@@ -10,12 +10,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.poly.Model.Product;
 import com.poly.Repository.ProductRepository;
+import com.poly.Service.OrderService;
+import com.poly.Service.ProductService;
 
 @Controller
 public class AppController {
 
 	@Autowired
 	private ProductRepository productRepository;
+	@Autowired
+	private ProductService productService;
+	@Autowired
+	private OrderService orderService;
 
 	@GetMapping("/")
 	public String home(Model model) {
